@@ -96,3 +96,15 @@ uv run python -m simclr_dino.eval --config configs/simclr.yaml --checkpoint chec
 uv run python -m simclr_dino.eval --config configs/dino.yaml --checkpoint checkpoints/dino/best_seed42.pt --branch teacher --split test
 uv run python -m simclr_dino.visualize
 ```
+
+---
+
+## Verification & Baseline Status
+
+* **Unit Tests:** `23 passed in 3.10s` (`uv run pytest -v`).
+* **Random-Init TinyViT Baseline (CIFAR-10 5k Val k-NN, `k=20`, `tau=0.07`):** **26.10%** mean (`26.28%` seed 42, `25.92%` seed 1337).
+* **CPU 10-Step Timing Gate (`train_subset=5000`, `batch_size=256`):**
+  * SimCLR: `33.5s` (`3.35 s/step`)
+  * DINO: `60.4s` (`6.04 s/step`)
+  * Full multi-seed training is deferred to **GPU (Google Colab)** rather than CPU.
+
