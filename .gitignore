@@ -1,0 +1,16 @@
+# Virtual environments & caches
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+
+# Datasets, checkpoints & generated outputs
+data/
+checkpoints/
+outputs/
+
+# OS / editor artifacts
+.DS_Store
+*.swp
