@@ -3,6 +3,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 [![PyTorch 2.5+](https://img.shields.io/badge/PyTorch-2.5%2B-EE4C2C.svg)](https://pytorch.org/)
 [![Package Manager: uv](https://img.shields.io/badge/managed%20by-uv-DE5FE9.svg)](https://github.com/astral-sh/uv)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A clean, first-principles PyTorch implementation and controlled comparison of **SimCLR (Contrastive Learning)** and **DINO (Self-Distillation with No Labels)** on **CIFAR-10 (32×32 RGB)** using a shared **Tiny Vision Transformer (ViT)** backbone—built from scratch without high-level SSL frameworks.
 
