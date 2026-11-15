@@ -1,0 +1,64 @@
+# ==============================================================================
+# DINO Configuration: CIFAR-10 with Shared Tiny ViT Backbone
+# ==============================================================================
+
+seed: 42
+seeds: [42, 1337]
+
+data:
+  data_dir: "data"
+  val_size: 5000
+  split_seed: 42
+  train_subset: 5000          # Set null for full 45,000 train split (Colab GPU)
+  batch_size: 256
+  num_workers: 2
+
+augmentations:
+  global_size: 32
+  global_scale: [0.3, 1.0]
+  local_size: 16
+  local_scale: [0.05, 0.3]
+  n_local_crops: 4            # 0 for debug baseline; [2, 4] for multi-crop ablation
+  ratio: [0.75, 1.3333]
+  flip_p: 0.5
+  jitter_p: 0.8
+  jitter_strength: 0.5        # brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1
+  grayscale_p: 0.2
+
+backbone:
+  patch_size: 4
+  embed_dim: 128              # CPU default (~0.80M params); Colab scale-up: 192
+  depth: 4                    # CPU default; Colab scale-up: 6
+  num_heads: 4                # CPU default; Colab scale-up: 6
+  mlp_ratio: 4.0
+
+dino:
+  head_hidden_dim: 512
+  bottleneck_dim: 128
+  num_prototypes: 1024        # Val sweep: [256, 1024, 4096]
+  freeze_g: true              # Fix weight-norm g=1.0
+  freeze_last_layer_steps: 20 # ~1 epoch at train_subset=5000, batch_size=256
+  student_temp: 0.1
+  teacher_temp_start: 0.04
+  teacher_temp_end: 0.07
+  teacher_temp_warmup_frac: 0.30
+  center_momentum: 0.9
+  ema_momentum_base: 0.985    # CPU 3k steps; use 0.996 for 17.5k-step Colab runs
+
+train:
+  max_steps: 3000             # CPU subset budget; Colab 45k: 17500 (~100 epochs)
+  lr: 5.0e-4
+  min_lr: 1.0e-6
+  weight_decay: 0.05
+  warmup_frac: 0.10
+  grad_clip: 1.0
+  eval_interval_steps: 300
+  checkpoint_dir: "checkpoints/dino"
+
+eval:
+  knn_k: 20
+  knn_temperature: 0.07
+  knn_chunk_size: 512
+  probe_lr: 1.0e-2
+  probe_epochs: 100
+  probe_weight_decay_grid: [0.0, 1.0e-4, 1.0e-2]
